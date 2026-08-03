@@ -6,6 +6,7 @@ from forge.pipeline.validator import CodeValidator
 from forge.pipeline.security import SecurityFilter
 
 from forge.core.execution_engine import ExecutionEngine
+from forge.core.planner import Planner
 
 
 class Agent:
@@ -17,6 +18,8 @@ class Agent:
         self.plugins = PluginManager()
         
         self.engine = None
+        
+        self.planner = Planner()
 
     async def initialize(self):
 
@@ -38,10 +41,22 @@ class Agent:
     async def execute(self, prompt: str):
 
         print("\n==============================")
+        print("Planner...")
+        print("==============================")
+
+        tasks = self.planner.plan(prompt)
+
+        for i, task in enumerate(tasks, start=1):
+            print(f"{i}. {task}")
+
+        # Per ora eseguiamo solo il primo task
+        task = tasks[0]
+
+        print("\n==============================")
         print("Qwen...")
         print("==============================")
 
-        code = self.llm.generate(prompt)
+        code = self.llm.generate(task)
 
         code = CodeCleaner.clean(code)
 
