@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "forgeai"
+version = "0.1.0"
+description = "ForgeAI - Modular AI Agent Framework based on MCP"
+readme = "README.md"
+requires-python = ">=3.12"
+
+authors = [
+    { name = "Orions Software Engineering" }
+]
+
+dependencies = [
+    "anyio>=4",
+    "httpx",
+    "mcp>=1.29",
+    "ollama",
+    "python-dotenv",
+]
+
+[tool.setuptools.packages.find]
+include = ["forge*"]

@@ -1,0 +1,5 @@
+anyio>=4
+httpx
+mcp>=1.29
+ollama
+python-dotenv

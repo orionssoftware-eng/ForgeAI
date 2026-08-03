@@ -1,0 +1,15 @@
+Metadata-Version: 2.4
+Name: forgeai
+Version: 0.1.0
+Summary: ForgeAI - Modular AI Agent Framework based on MCP
+Author: Orions Software Engineering
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: anyio>=4
+Requires-Dist: httpx
+Requires-Dist: mcp>=1.29
+Requires-Dist: ollama
+Requires-Dist: python-dotenv
+
+# ForgeAI
+Forgiatore 3D
