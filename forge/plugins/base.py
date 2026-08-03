@@ -5,6 +5,8 @@ from dataclasses import dataclass
 from typing import List
 
 
+
+
 @dataclass
 class Capability:
     name: str
@@ -13,11 +15,16 @@ class Capability:
 
 class Plugin(ABC):
 
-    name: str = ""
-    version: str = "0.1"
+    name = ""
 
-    capabilities: List[Capability] = []
+    version = "0.1"
+
+    capabilities = []
+
+    tools = []
 
     def initialize(self):
-        """Called when ForgeAI starts."""
+        pass
+
+    def register_tools(self, registry):
         pass

@@ -14,6 +14,8 @@ def main():
     manager.discover()
 
     manager.initialize()
+    
+    manager.register_tools()
 
     print()
 
@@ -30,6 +32,14 @@ def main():
     for cap in manager.capabilities():
 
         print("-", cap.name)
+        
+    print()
+
+    print("TOOLS")
+
+    for tool in manager.tool_registry.list():
+
+        print("-", tool.name)
 
 
 if __name__ == "__main__":

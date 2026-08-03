@@ -1,8 +1,9 @@
+from pathlib import Path
 import importlib
 import inspect
-import pkgutil
 
 from forge.plugins.base import Plugin
+from forge.tools.registry import ToolRegistry
 
 
 class PluginManager:
@@ -11,32 +12,42 @@ class PluginManager:
 
         self.plugins = []
 
+        self.tool_registry = ToolRegistry()
+
     def discover(self):
 
-        package = importlib.import_module("forge.plugins")
+        plugins_dir = Path(__file__).parent
 
-        for _, module_name, ispkg in pkgutil.iter_modules(package.__path__):
+        for folder in plugins_dir.iterdir():
 
-            if not ispkg:
+            if not folder.is_dir():
                 continue
+
+            if folder.name.startswith("__"):
+                continue
+
+            plugin_file = folder / "plugin.py"
+
+            if not plugin_file.exists():
+                continue
+
+            module_name = f"forge.plugins.{folder.name}.plugin"
 
             try:
 
-                module = importlib.import_module(
-                    f"forge.plugins.{module_name}.plugin"
-                )
+                module = importlib.import_module(module_name)
 
-            except ModuleNotFoundError:
+            except Exception as e:
+
+                print(e)
 
                 continue
 
-            for _, obj in inspect.getmembers(module):
+            for _, obj in inspect.getmembers(module, inspect.isclass):
 
-                if inspect.isclass(obj):
+                if issubclass(obj, Plugin) and obj is not Plugin:
 
-                    if issubclass(obj, Plugin) and obj is not Plugin:
-
-                        self.plugins.append(obj())
+                    self.plugins.append(obj())
 
     def initialize(self):
 
@@ -44,12 +55,18 @@ class PluginManager:
 
             plugin.initialize()
 
-    def capabilities(self):
-
-        caps = []
+    def register_tools(self):
 
         for plugin in self.plugins:
 
-            caps.extend(plugin.capabilities)
+            plugin.register_tools(self.tool_registry)
 
-        return caps
+    def capabilities(self):
+
+        capabilities = []
+
+        for plugin in self.plugins:
+
+            capabilities.extend(plugin.capabilities)
+
+        return capabilities
