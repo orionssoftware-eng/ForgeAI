@@ -31,8 +31,8 @@ class BlenderClient:
             return
 
         params = StdioServerParameters(
-            command=settings.MCP_COMMAND,
-            args=settings.MCP_ARGS,
+            command=settings.mcp_command,
+            args=settings.mcp_args,
         )
 
         self._stdio = stdio_client(params)

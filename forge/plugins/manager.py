@@ -49,11 +49,11 @@ class PluginManager:
 
                     self.plugins.append(obj())
 
-    def initialize(self):
+    async def initialize(self):
 
         for plugin in self.plugins:
 
-            plugin.initialize()
+            await plugin.initialize()
 
     def register_tools(self):
 

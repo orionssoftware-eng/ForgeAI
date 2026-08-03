@@ -1,47 +1,33 @@
-from forge.plugins.manager import PluginManager
+import anyio
+
+from forge.agent.agent import Agent
 
 
-def main():
+async def main():
 
-    print()
+    print("=" * 50)
+    print(" ForgeAI")
+    print("=" * 50)
 
-    print("========== ForgeAI ==========")
+    agent = Agent()
 
-    print()
+    await agent.initialize()
 
-    manager = PluginManager()
+    while True:
 
-    manager.discover()
+        prompt = input("\n>>> ")
 
-    manager.initialize()
-    
-    manager.register_tools()
+        if prompt.lower() in ("exit", "quit"):
 
-    print()
+            break
 
-    print("Loaded Plugins")
+        result = await agent.execute(prompt)
 
-    for plugin in manager.plugins:
+        print()
 
-        print("-", plugin.name)
-
-    print()
-
-    print("Capabilities")
-
-    for cap in manager.capabilities():
-
-        print("-", cap.name)
-        
-    print()
-
-    print("TOOLS")
-
-    for tool in manager.tool_registry.list():
-
-        print("-", tool.name)
+        print(result)
 
 
 if __name__ == "__main__":
 
-    main()
+    anyio.run(main)

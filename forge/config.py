@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-
 @dataclass
 class Settings:
 
@@ -25,12 +24,21 @@ class Settings:
         "INFO"
     )
 
+    mcp_command: str = os.getenv(
+        "MCP_COMMAND",
+        "python"
+    )
+
+    mcp_args: list = None
+
+    def __post_init__(self):
+
+        if self.mcp_args is None:
+
+            self.mcp_args = [
+                "-m",
+                "blender_mcp.server"
+            ]
+
 
 settings = Settings()
-
-MCP_COMMAND = "python"
-
-MCP_ARGS = [
-    "-m",
-    "blender_mcp.server"
-]
