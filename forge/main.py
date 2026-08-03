@@ -1,22 +1,37 @@
-from forge.config import settings
+from forge.plugins.manager import PluginManager
 
 
 def main():
 
-    print("=" * 50)
+    print()
 
-    print("ForgeAI")
-
-    print("=" * 50)
+    print("========== ForgeAI ==========")
 
     print()
 
-    print("Model :", settings.ollama_model)
+    manager = PluginManager()
 
-    print("Host  :", settings.ollama_host)
+    manager.discover()
+
+    manager.initialize()
 
     print()
+
+    print("Loaded Plugins")
+
+    for plugin in manager.plugins:
+
+        print("-", plugin.name)
+
+    print()
+
+    print("Capabilities")
+
+    for cap in manager.capabilities():
+
+        print("-", cap.name)
 
 
 if __name__ == "__main__":
+
     main()
